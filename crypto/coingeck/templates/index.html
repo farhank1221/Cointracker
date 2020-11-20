@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Crypto table</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+      #myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand text-center" href="#">CoinTracer</a>
+    </div>
+    <ul class="nav navbar-nav">
+    </ul>
+
+  </div>
+</nav>
+    <div class="container">
+        <h1 class="text-center">Search from the TOP 100 coins by market capitalization</h1>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+    <table id="myTable" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Logo</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Price Change 24H</th>
+                <th>Market cap</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% load humanize %}
+            {%for i in extra%}
+                <tr>
+                    <td>{{i.symbol|upper}}</td>
+                    <td><img src="{{i.image}}" width="20px" height="20px"></td>
+                    <td><b>{{i.name|capfirst}}</b></td>
+                    <td>${{i.current_price|intcomma}}</td>
+                    <td>${{i.price_change_24h|intcomma}}</td>
+                    <td>${{i.market_cap|intcomma}}</td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+   </div>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
